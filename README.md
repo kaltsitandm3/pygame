@@ -1,3 +1,2 @@
 # pygame
-能不能说中文
-ok
+A fuking damn big repo.
