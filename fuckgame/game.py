@@ -23,12 +23,10 @@ class Game:
 
         self.colors = settings["colors"]
         self.num_pegs = settings["num_pegs"]
-
         return self.colors, self.num_pegs
 
     def get_random_colors(self):
         self.random_colors = random.choices(self.colors, k=self.num_pegs)
-
         return self.random_colors
 
     def check(self, guesses: List[str]):
