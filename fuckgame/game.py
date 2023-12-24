@@ -36,7 +36,7 @@ class Game:
 
         for i, (guess, target) in enumerate(zip(guesses, self.random_colors)):
             if guess.lower() == target.lower():
-                self.score += len(self.random_colors)
+                self.score += i + 1
                 correct_idx.append(i + 1)
 
         return self.score, correct_idx
