@@ -1,26 +1,42 @@
 import json
-from typing import Tuple, Union
+import random
+from typing import List, Tuple
 
 
 class Game:
     def __init__(self) -> None:
-        self.color_count = None
-        self.colors = None
+        self.num_rounds: int = None
+        self.num_pegs: int = None
+        self.score: int = None
 
-    def load_settings(self, file_path: str) -> Tuple[Union[int, list], Union[int, list]]:
-        if not file_path.endswith(".json"):
-            raise Exception()
+        self.colors: List[str] = None
+        self.random_colors: List[str] = None
 
+        self.guesses: dict = None
+
+    def load(self, file_path: str) -> Tuple[List[str], int]:
         with open(file_path, "r") as file:
-            colors = json.load(file)
+            settings = json.load(file)
 
-        self.color_count = colors.get("color_count", 0)
-        self.colors = colors.get("colors", [])
-
-        if not self.color_count or not self.colors:
+        if settings["num_pegs"] > len(settings["colors"]):
             raise Exception()
 
-        if self.color_count > len(self.colors):
-            raise Exception()
+        self.colors = settings["colors"]
+        self.num_pegs = settings["num_pegs"]
 
-        return self.color_count, self.colors
+        return self.colors, self.num_pegs
+
+    def get_random_colors(self):
+        self.random_colors = random.choices(self.colors, k=self.num_pegs)
+
+        return self.random_colors
+
+    def check(self, guesses: List[str]):
+        correct_idx = []
+
+        for i, (guess, target) in enumerate(zip(guesses, self.random_colors)):
+            if guess.lower() == target.lower():
+                self.score += len(self.random_colors)
+                correct_idx.append(i + 1)
+
+        return self.score, correct_idx
