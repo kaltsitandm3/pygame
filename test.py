@@ -2,9 +2,9 @@ from fuckgame import Game
 
 if __name__ == "__main__":
     g = Game()
-
     colors, num_pegs = g.load("settings.json")
-    print(f"所有颜色: {colors}\n彩钉数量: {num_pegs}")
+
+    print(f"所有颜色: {colors}\n彩钉数量: {num_pegs}", end="\n\n")
 
     while True:
         try:
@@ -18,28 +18,35 @@ if __name__ == "__main__":
             pass
 
     random_colors = g.get_random_colors()
-    print(random_colors)
-    g.guesses = {}
-    g.score = 0
 
     for i, round in enumerate(range(g.num_rounds)):
         guesses = []
 
-        print(f"第{i + 1}轮")
+        print(f"\n第{i + 1}轮")
 
-        for j, peg in enumerate(range(g.num_pegs)):
+        for j, peg in enumerate(range(num_pegs)):
             while True:
                 guess = input(f"请猜测第{j + 1}个颜色: ")
 
-                if guess.lower() not in [color.lower() for color in g.colors]:
+                if guess.lower() not in [color.lower() for color in colors]:
+                    print("颜色不存在")
                     continue
 
                 guesses.append(guess)
                 break
 
         score, correct_idx = g.check(guesses)
-        print(f"猜对了第{correct_idx}个\n当前总分: {g.score}")
 
-        g.guesses[f"round[{i + 1}]"] = guesses
+        if i + 1 == g.num_rounds:
+            print(f"\n猜对了第{correct_idx}个\n最终分数: {score}")
+        else:
+            print(f"\n猜对了第{correct_idx}个\n当前分数: {score}")
 
-    print(random_colors)
+        g.all_guesses[f"round[{i + 1}]"] = guesses
+
+    print(f"\n正确颜色为: {random_colors}")
+
+    print("\n猜测记录: ")
+
+    for key, value in g.all_guesses.items():
+        print(f"{key}: {value}")

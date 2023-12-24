@@ -7,12 +7,12 @@ class Game:
     def __init__(self) -> None:
         self.num_rounds: int = None
         self.num_pegs: int = None
-        self.score: int = None
+        self.score: int = 0
 
         self.colors: List[str] = None
         self.random_colors: List[str] = None
 
-        self.guesses: dict = None
+        self.all_guesses: dict = {}
 
     def load(self, file_path: str) -> Tuple[List[str], int]:
         with open(file_path, "r") as file:
