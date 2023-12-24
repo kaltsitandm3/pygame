@@ -18,6 +18,7 @@ if __name__ == "__main__":
             pass
 
     random_colors = g.get_random_colors()
+    print(random_colors)
 
     for i, round in enumerate(range(g.num_rounds)):
         guesses = []
@@ -29,7 +30,7 @@ if __name__ == "__main__":
                 guess = input(f"请猜测第{j + 1}个颜色: ")
 
                 if guess.lower() not in [color.lower() for color in colors]:
-                    print("颜色不存在")
+                    print("颜色不存在！")
                     continue
 
                 guesses.append(guess)
@@ -37,12 +38,19 @@ if __name__ == "__main__":
 
         score, correct_idx = g.check(guesses)
 
-        if i + 1 == g.num_rounds:
-            print(f"\n猜对了第{correct_idx}个\n最终分数: {score}")
-        else:
-            print(f"\n猜对了第{correct_idx}个\n当前分数: {score}")
-
         g.all_guesses[f"round[{i + 1}]"] = guesses
+
+        if len(correct_idx) == num_pegs:
+            for _ in range(g.num_rounds - i - 1):
+                for j in range(1, num_pegs + 1):
+                    score += j
+
+            print(f"\n全部猜对了！\n最终分数: {score}")
+            break
+        elif i + 1 == g.num_rounds:
+            print(f"\n猜对了第{correct_idx}个！\n最终分数: {score}")
+        else:
+            print(f"\n猜对了第{correct_idx}个！\n当前分数: {score}")
 
     print(f"\n正确颜色为: {random_colors}")
 
